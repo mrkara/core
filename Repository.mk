@@ -252,10 +252,13 @@ $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,calc, \
 	sc \
 	scd \
 	scfilt \
-	scui \
 	wpftcalc \
 	solver \
 	$(call gb_Helper_optional,SCRIPTING,vbaobj) \
+))
+
+$(eval $(call gb_Helper_register_plugins_for_install,OOOLIBS,calc, \
+    scui \
 ))
 
 $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,graphicfilter, \
@@ -280,20 +283,27 @@ $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,onlineupdate, \
 
 $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,gnome, \
 	$(if $(ENABLE_EVOAB2),evoab) \
-	$(if $(ENABLE_GTK3),vclplug_gtk3) \
-	$(if $(ENABLE_GTK4),vclplug_gtk4) \
 	$(if $(ENABLE_GIO),losessioninstall) \
 	$(if $(ENABLE_GIO),ucpgio1) \
 ))
 
+$(eval $(call gb_Helper_register_plugins_for_install,OOOLIBS,gnome, \
+    $(if $(ENABLE_GTK3),vclplug_gtk3) \
+    $(if $(ENABLE_GTK4),vclplug_gtk4) \
+))
+
 $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,kde, \
 	$(if $(ENABLE_KF5),kf5be1) \
-	$(if $(USING_X11), \
-        $(if $(ENABLE_KF5),vclplug_kf5) \
-        $(if $(ENABLE_QT5),vclplug_qt5) \
-        $(if $(ENABLE_GTK3_KDE5),vclplug_gtk3_kde5) \
-	) \
 ))
+
+ifneq (,$(USING_X11))
+$(eval $(call gb_Helper_register_plugins_for_install,OOOLIBS,kde, \
+    $(if $(ENABLE_KF5),vclplug_kf5) \
+    $(if $(ENABLE_QT5),vclplug_qt5) \
+    $(if $(ENABLE_GTK3_KDE5),vclplug_gtk3_kde5) \
+))
+endif
+
 ifneq ($(ENABLE_GTK3_KDE5),)
 $(eval $(call gb_Helper_register_executables_for_install,OOO,kde, \
        lo_kde5filepicker \
@@ -301,7 +311,7 @@ $(eval $(call gb_Helper_register_executables_for_install,OOO,kde, \
 endif
 
 ifeq ($(OS),HAIKU)
-$(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,haiku, \
+$(eval $(call gb_Helper_register_plugins_for_install,OOOLIBS,haiku, \
     $(if $(ENABLE_QT5),vclplug_qt5) \
     $(if $(ENABLE_KF5),vclplug_kf5) \
 ))
@@ -317,7 +327,6 @@ $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,ogltrans, \
 ))
 
 $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,ooo, \
-	acc \
     avmedia \
     $(call gb_Helper_optional,AVMEDIA, \
 	$(if $(filter MACOSX,$(OS)),\
@@ -340,7 +349,6 @@ $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,ooo, \
 	cppcanvas \
 	configmgr \
 	ctl \
-	cui \
 	dba \
 	dbahsql \
 	$(call gb_Helper_optional,DBCONNECTIVITY, \
@@ -409,7 +417,6 @@ $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,ooo, \
 	sd \
 	sdd \
 	sdfilt \
-	sdui \
 	sfx \
 	simplecanvas \
 	slideshow \
@@ -454,14 +461,10 @@ $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,ooo, \
 	xof \
 	xsltdlg \
 	xsltfilter \
-	$(if $(USING_X11), \
-		vclplug_gen \
-	) \
 	$(if $(filter $(OS),WNT), \
 		ado \
 		oleautobridge \
 		smplmail \
-		vclplug_win \
 		wininetbe1 \
 	) \
 	$(if $(filter $(OS),MACOSX), \
@@ -469,11 +472,21 @@ $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,ooo, \
 			AppleRemote \
 		) \
 		fps_aqua \
-		vclplug_osx \
 	) \
 	$(if $(filter iOS MACOSX,$(OS)), \
 		MacOSXSpell \
 	) \
+))
+
+$(eval $(call gb_Helper_register_plugins_for_install,OOOLIBS,ooo, \
+    acc \
+    cui \
+    gie \
+    sdui \
+    $(if $(USING_X11),vclplug_gen) \
+    $(if $(filter $(OS),WNT),vclplug_win) \
+    $(if $(filter $(OS),MACOSX),vclplug_osx) \
+    $(if $(USING_X11),,$(if $(ENABLE_QT5),vclplug_qt5)) \
 ))
 
 $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,postgresqlsdbc, \
@@ -512,12 +525,15 @@ $(eval $(call gb_Helper_register_libraries_for_install,OOOLIBS,writer, \
 	$(if $(ENABLE_LWP),lwpft) \
 	msword \
 	swd \
-	swui \
 	t602filter \
 	$(call gb_Helper_optional,SCRIPTING,vbaswobj) \
 	wpftwriter \
 	writerfilter \
 	$(call gb_Helper_optional,DBCONNECTIVITY,writer) \
+))
+
+$(eval $(call gb_Helper_register_plugins_for_install,OOOLIBS,writer, \
+    swui \
 ))
 
 # cli_cppuhelper is NONE even though it is actually in URE because it is CliNativeLibrary
@@ -580,12 +596,15 @@ $(eval $(call gb_Helper_register_libraries_for_install,PRIVATELIBS_URE,ure, \
 	proxyfac \
 	reflection \
 	reg \
-	sal_textenc \
 	stocservices \
 	store \
 	unoidl \
 	uuresolver \
 	xmlreader \
+))
+
+$(eval $(call gb_Helper_register_plugins_for_install,PRIVATELIBS_URE,ure, \
+    sal_textenc \
 ))
 
 $(eval $(call gb_Helper_register_libraries_for_install,PLAINLIBS_OOO,ooo, \
@@ -594,23 +613,15 @@ $(eval $(call gb_Helper_register_libraries_for_install,PLAINLIBS_OOO,ooo, \
         $(if $(filter WNT,$(OS)),avmediawin) \
     ) \
 	cached1 \
-	collator_data \
 	comphelper \
 	$(call gb_Helper_optional,DBCONNECTIVITY,dbpool2) \
 	$(call gb_Helper_optional,BREAKPAD,crashreport) \
 	deployment \
 	deploymentgui \
-	dict_ja \
-	dict_zh \
 	embobj \
 	$(if $(ENABLE_JAVA),hsqldb) \
 	i18nutil \
-	index_data \
 	$(if $(and $(ENABLE_GTK3), $(filter LINUX %BSD SOLARIS,$(OS))), libreofficekitgtk) \
-	localedata_en \
-	localedata_es \
-	localedata_euro \
-	localedata_others \
 	$(if $(ENABLE_JAVA), \
 		$(if $(filter $(OS),MACOSX),,officebean) \
 	) \
@@ -620,7 +631,6 @@ $(eval $(call gb_Helper_register_libraries_for_install,PLAINLIBS_OOO,ooo, \
 	sdbc2 \
 	sofficeapp \
 	srtrs1 \
-	textconv_dict \
 	ucb1 \
 	ucbhelper \
 	$(if $(WITH_WEBDAV),ucpdav1) \
@@ -643,6 +653,18 @@ $(eval $(call gb_Helper_register_libraries_for_install,PLAINLIBS_OOO,ooo, \
 		UAccCOM \
 		winaccessibility \
 	) \
+))
+
+$(eval $(call gb_Helper_register_plugins_for_install,PLAINLIBS_OOO,ooo, \
+    collator_data \
+    dict_ja \
+    dict_zh \
+    index_data \
+    localedata_en \
+    localedata_es \
+    localedata_euro \
+    localedata_others \
+    textconv_dict \
 ))
 
 ifeq ($(OS),WNT)

@@ -9,6 +9,8 @@
 
 $(eval $(call gb_Rdb_Rdb_install,services))
 
+ifeq (,$(ENABLE_SERVICE_RDB_FROM_BUILD))
+
 #
 # "minimal" list of services for cross-compiling build tools
 #
@@ -334,5 +336,12 @@ $(eval $(call gb_Rdb_add_components,services,\
 endif
 
 endif # $(gb_Side),host
+
+else # !ENABLE_SERVICE_RDB_FROM_BUILD
+
+# see Makefile.gbuild for the gb_Rdb_add_components,services calls
+$(gb_Rdb_get_target,services): $(gb_CustomTarget_get_target,postprocess/components)
+
+endif
 
 # vim: set noet sw=4 ts=4:

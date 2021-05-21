@@ -9,9 +9,14 @@
 
 $(eval $(call gb_Module_Module,helpcompiler))
 
+ifeq (,$(DISABLE_DYNLOADING))
 $(eval $(call gb_Module_add_targets,helpcompiler,\
     Executable_HelpIndexer \
     Executable_HelpLinker \
+))
+endif
+
+$(eval $(call gb_Module_add_targets,helpcompiler,\
     Library_helplinker \
 ))
 

@@ -39,6 +39,7 @@ $(eval $(call gb_Module_make_global_targets,$(wildcard $(module_directory)Module
 
 ifeq ($(DISABLE_DYNLOADING),TRUE)
 $(if $(gb_LinkTarget__Lock),$(shell rm -f $(gb_LinkTarget__Lock)))
+include $(SRCDIR)/solenv/gbuild/static.mk
 endif
 
 # vim: set noet sw=4 ts=4:

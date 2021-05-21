@@ -103,6 +103,7 @@ $(eval $(call gb_Library_use_system_win32_libs,svl,\
 ))
 else
 ifneq (,$(filter DESKTOP,$(BUILD_TYPE))$(filter ANDROID iOS,$(OS)))
+ifneq (,$(ENABLE_NSS))
 $(eval $(call gb_Library_add_defs,svl,\
     -DSVL_CRYPTO_NSS \
 ))
@@ -110,6 +111,7 @@ $(eval $(call gb_Library_use_externals,svl,\
     nss3 \
     plc4 \
 ))
+endif # ENABLE_NSS
 endif # BUILD_TYPE=DESKTOP
 endif
 

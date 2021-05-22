@@ -10,7 +10,7 @@
 # Tools we need to build for cross-compiling
 ifeq ($(gb_Side),build)
 gb_BUILD_TOOLS = \
-	$(foreach executable, \
+    $(foreach executable, \
 		bestreversemap \
 		cfgex \
 		climaker \
@@ -34,17 +34,18 @@ gb_BUILD_TOOLS = \
 		unoidl-check \
 		unoidl-write \
 		xrmex \
-		$(call gb_Helper_optional_for_host,DESKTOP, \
-			HelpIndexer \
-			HelpLinker \
-			lngconvex \
-		) \
+        $(call gb_Helper_optional_for_host,DESKTOP, \
+            $(if gb_Helper_optional_for_host,HELP,HelpIndexer) \
+            $(if gb_Helper_optional_for_host,HELP,HelpLinker) \
+            $(if $(filter WNT,$(OS)),lngconvex) \
+        ) \
 	,$(call gb_Executable_get_runtime_dependencies,$(executable))) \
 	$(foreach executable, \
         python \
 		xsltproc \
 	,$(call gb_ExternalExecutable_get_dependencies,$(executable))) \
 	$(INSTROOT)/$(LIBO_URE_ETC_FOLDER)/$(call gb_Helper_get_rcfile,uno) \
+    $(if $(WITH_GALLERY_BUILD),$(call gb_Library_get_target,localedata_en)) \
 
 endif
 
